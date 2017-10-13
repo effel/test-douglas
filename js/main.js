@@ -4,7 +4,6 @@
 // Function fr data array slicing
 function sliceCurrentArr(startPos, endPos, arr) {
    let sliced = arr.slice(startPos, endPos);
-   sessionStorage.setItem('currentDataArrState', JSON.stringify(sliced));
    return sliced;
 };
 
@@ -116,7 +115,7 @@ function init() {
         if (e.target.tagName.toLowerCase() === 'input')
         {
             const checkElem = e.target; 
-            const currentData = JSON.parse(sessionStorage.getItem('currentDataArrState'));
+            const currentData = itemsData;
             const elemType = checkElem.getAttribute('data-type');
 
             if (checkElem.checked) {
