@@ -4,6 +4,7 @@
 // Function fr data array slicing
 function sliceCurrentArr(startPos, endPos, arr) {
    let sliced = arr.slice(startPos, endPos);
+   sessionStorage.setItem('currentDataArrState', JSON.stringify(sliced));
    return sliced;
 };
 
@@ -42,9 +43,9 @@ function createItemTemplate(itemObj) {
 };
 
 //creating list of items for current state
-function createItemsListView(startPosition, endPosition) {
+function createItemsListView(startPosition, endPosition, currentData) {
     const itemsParentContainer = document.querySelector('.item-wrapper');   
-    const currentItemData = sliceCurrentArr(startPosition, endPosition, itemsData);     
+    const currentItemData = sliceCurrentArr(startPosition, endPosition, currentData);     
     let itemsTeml = '';        
     currentItemData.forEach(function(element) {
         itemsTeml += createItemTemplate(element);
@@ -70,7 +71,7 @@ function init() {
     };
     navMenuElement.innerHTML = linkTempl;
 
-    createItemsListView(0, itemsCount);  
+    createItemsListView(0, itemsCount, itemsData);  
     navMenuElementLinksArr[0].classList.add("active");  
 
     navMenuElement.addEventListener("click", function(e) {
@@ -91,7 +92,7 @@ function init() {
 
             const startItemsPosition = +(linkElem.getAttribute('data-link-order')); 
             const endItemsPosition = startItemsPosition + itemsCount;
-            createItemsListView(startItemsPosition, endItemsPosition);
+            createItemsListView(startItemsPosition, endItemsPosition, itemsData);
         };
 
     });    
@@ -109,6 +110,29 @@ function init() {
       };
   }); 
 
+
+    document.querySelector('.filter-block').addEventListener("click", function(e) {
+
+        if (e.target.tagName.toLowerCase() === 'input')
+        {
+            const checkElem = e.target; 
+            const currentData = JSON.parse(sessionStorage.getItem('currentDataArrState'));
+            const elemType = checkElem.getAttribute('data-type');
+
+            if (checkElem.checked) {
+
+               var filtered = currentData.filter(function(elem){
+
+                   return elem.label === elemType;
+               });
+
+               console.log(filtered)
+
+            }
+           
+        };
+
+    }); 
 
 };
 
